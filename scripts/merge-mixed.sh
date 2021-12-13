@@ -10,7 +10,7 @@ if ! git config remote.proj.url > /dev/null; then
     git remote add proj https://github.com/birc-gsa/$proj.git
 fi
 if ! git config remote.build.url > /dev/null; then
-    git remote add build https://github.com/birc-gsa/build-$build-mixin.git
+    git remote add build https://github.com/birc-gsa/$build.git
 fi
 
 git fetch proj

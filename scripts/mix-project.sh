@@ -43,9 +43,15 @@ $DO git commit -m "first commit"
 $DO git branch -M main
 $DO git remote add origin https://github.com/birc-gsa/$MIXED.git
 $DO git push -u origin main
+
+$DO mkdir -p .gsa
+$DO echo $PROJ > .gsa/project-base
 $DO git remote add proj https://github.com/birc-gsa/$PROJ.git
 $DO git fetch proj
 $DO git merge proj/main --allow-unrelated-histories
+
+
+$DO echo $MIXIN > .gsa/build-base
 $DO git remote add build https://github.com/birc-gsa/$MIXIN.git
 $DO git fetch build
 $DO git merge build/main --allow-unrelated-histories
