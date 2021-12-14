@@ -1,15 +1,9 @@
 #!/bin/bash
 
-RUN=0
 ARGS=()
 while [[ $# -gt 0 ]]; do
   key="$1"
 
-  case $key in
-    -r|--run)
-      RUN=1
-      shift
-      ;;
     *)
       ARGS+=("$1") # save it in an array for later
       shift
@@ -26,35 +20,28 @@ PROJ=${ARGS[0]}
 MIXIN=build-${ARGS[1]}-mixin
 MIXED=$PROJ-${ARGS[1]}
 
-if (( $RUN == 0 )); then
-    DO=echo
-else
-    DO=
-fi
+mkdir $MIXED
+gh repo create -d "GSA project" --public birc-gsa/$MIXED 
+cd $MIXED
+git init
+touch .setup
+git add .setup
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/birc-gsa/$MIXED.git
+git push -u origin main
 
-#echo $PROJ $MIXIN
-$DO mkdir $MIXED
-$DO gh repo create -d "GSA project" --public birc-gsa/$MIXED 
-$DO cd $MIXED
-$DO git init
-$DO touch .setup
-$DO git add .setup
-$DO git commit -m "first commit"
-$DO git branch -M main
-$DO git remote add origin https://github.com/birc-gsa/$MIXED.git
-$DO git push -u origin main
-
-$DO mkdir -p .gsa
-$DO echo $PROJ > .gsa/project-base
-$DO git remote add proj https://github.com/birc-gsa/$PROJ.git
-$DO git fetch proj
-$DO git merge proj/main --allow-unrelated-histories
+mkdir -p .gsa
+echo $PROJ > .gsa/project-base
+git remote add proj https://github.com/birc-gsa/$PROJ.git
+git fetch proj
+git merge proj/main --allow-unrelated-histories
 
 
-$DO echo $MIXIN > .gsa/build-base
-$DO git remote add build https://github.com/birc-gsa/$MIXIN.git
-$DO git fetch build
-$DO git merge build/main --allow-unrelated-histories
-$DO rm .setup
-$DO git commit -am "done with mixing project and build"
-$DO git push
+echo $MIXIN > .gsa/build-base
+git remote add build https://github.com/birc-gsa/$MIXIN.git
+git fetch build
+git merge build/main --allow-unrelated-histories
+rm .setup
+git commit -am "done with mixing project and build"
+git push

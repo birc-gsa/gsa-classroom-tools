@@ -1,8 +1,18 @@
 # gsa-classroom-tools
 
-Tools for working with GSA projects with GitHub Classroom
+Tools for working with GSA projects with GitHub Classroom.
+
+## Structure of GSA repos
+
+![Structure of project/exercises repos](img/gsa-classroom.png)
+
+
 
 ## Setting up projects
+
+A "project" is basically the same as an "exercise", except that we pull in some additional testing framework for the structure the main projects have, and we do that from a base project repo remote.
+
+To set up a new project, use the `new-project.sh` script. It will automatically do the steps described below. However, if you want to do them manually, you can just follow the instructions.
 
 This [`gsa-project-base`](https://github.com/birc-gsa/gsa-project-base) repo collects common code and information shared between all projects. To use it, you need to build a specific one. To do that, first create a new repository and clone it to your own machine. There isn't a README.md file in this repository, so you can add that to the project repo, but you should not add a .gitignore, as that should come from the build-specific mixin.
 
@@ -20,6 +30,8 @@ Now you have a connection to the base-repo so you can fetch and merge updates in
 > git fetch base
 > git merge base/main
 ```
+
+The `merge-base-project.sh` script will do this for you, if you want it automated.
 
 In the new project, you can describe the specific project; use README.md for that, and you can configure the testing setup specific to the project. As a minimum, you need to add `.gsa/test-test.yml`. It is currently empty, but it must be populated for the testing workflow to function. An example could be this:
 
@@ -85,6 +97,8 @@ jobs:
 
 In addition to this, it could contain some minimal setup for building for this environment. This isn't strictly necessary, since we likely will have to adapt it for each project anyway. But still...
 
+You can create a repo with a template using `new-build-mixin.sh`.
+
 
 ## Creating a concrete project
 
@@ -107,3 +121,5 @@ to run it for real.
 Run it from outside an existing repo clone because it will create a new dir and a repository in it. You will have to make it a template yourself, because I don't know how to do that on the command-line.
 
 From this project repo you can fetch new project data from `proj/main` and new build data from `build/main`.
+
+If you need to update a mixed project, you can use the `merge-mixed.sh` script to automatically fetch and merge from the build mixin and the generic project.

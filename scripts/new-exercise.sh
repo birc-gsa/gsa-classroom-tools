@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DESCR="New Project"
+DESCR="Exercise"
 ARGS=()
 while [[ $# -gt 0 ]]; do
   key="$1"
@@ -19,7 +19,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if (( ${#ARGS[@]} != 1 )); then
-    echo "Usage: new-project.sh repo-name"
+    echo "Usage: new-exercise.sh repo-name"
     exit
 fi
 
@@ -35,10 +35,5 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin https://github.com/birc-gsa/$PROJ.git
 git push -u origin main
-
-git remote add base https://github.com/birc-gsa/gsa-project-base
-git fetch base
-git merge base/main --allow-unrelated-histories
-
-git commit -am "done setting up project"
+git commit -am "done setting up exercise"
 git push
