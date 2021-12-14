@@ -3,7 +3,7 @@
 ARGS=()
 while [[ $# -gt 0 ]]; do
   key="$1"
-
+  case $key in
     *)
       ARGS+=("$1") # save it in an array for later
       shift
