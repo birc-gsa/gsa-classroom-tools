@@ -2,6 +2,22 @@
 
 Tools for working with GSA projects with GitHub Classroom.
 
+You might want to check out all the repos in this organisation, since you will be working with almost all of them. You can do this with a command line like:
+
+```fish
+gh repo list birc-gsa | while read repo _ ; gh repo clone $repo $repo; end
+```
+
+for `fish` or 
+
+```bash
+gh repo list birc-gsa | while read -r repo _ ; do gh repo clone $repo $repo; done
+```
+
+for `bash`.
+
+
+
 ## Structure of GSA repos
 
 Since we allow students to choose different languages for the projects, and because they still have to do the same exercises and projects, the structure of these repositories is a little messy. We use some repositories for generic stuff, like exercise and project descriptions, and others for setting up the build environment for each of these. (Trying to have the students set up stuff that will work with testing workflows is doomed to failure, so we need to do this before they get the assignments). We then have concrete exercises and projects that mix a problem description with a build environment, that can pull the generic stuff from remote repos, and these we can use in GitHub Classroom for assignments.
