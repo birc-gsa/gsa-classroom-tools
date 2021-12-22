@@ -145,3 +145,13 @@ Run it from outside an existing repo clone because it will create a new dir and 
 From this project repo you can fetch new project data from `proj/main` and new build data from `build/main`.
 
 If you need to update a mixed project, you can use the `merge-mixed.sh` script to automatically fetch and merge from the build mixin and the generic project.
+
+
+
+## Setting up a new class
+
+When you are about to run a new class, create a new organisation for it (that way you can handle repos and administration access separately year for year). For year 20xx, create birc-gsa-20xx, for example.
+
+In that repo, go to Settings > Member privilages and change Base permissions to Read. Otherwise, the students cannot invite each other to review (and it is nice to get them to do that).
+
+Then, setup a GitHub Classroom and all the exercises--I don't think you can automate this, unfortunately.
