@@ -132,13 +132,7 @@ Run it as
 > mix-project.sh project-name build-mixin
 ```
 
-where `build-mixin` doesn't contain the `build-` and `-mixin` part. A run as above is a dry-run that shows the commands that it will execute. Check that they are okay, and then run it as
-
-```sh
-> mix-project.sh -r project-name build-mixin
-```
-
-to run it for real.
+where `build-mixin` doesn't contain the `build-` and `-mixin` part.
 
 Run it from outside an existing repo clone because it will create a new dir and a repository in it. You will have to make it a template yourself, because I don't know how to do that on the command-line.
 
