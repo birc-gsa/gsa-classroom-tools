@@ -43,5 +43,7 @@ git remote add build https://github.com/birc-gsa/$MIXIN.git
 git fetch build
 git merge build/main --allow-unrelated-histories
 rm .setup
+
+git add .gsa
 git commit -am "done with mixing project and build"
 git push
