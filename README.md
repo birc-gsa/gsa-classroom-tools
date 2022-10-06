@@ -2,6 +2,22 @@
 
 Tools for working with GSA projects with GitHub Classroom.
 
+You might want to check out all the repos in this organisation, since you will be working with almost all of them. You can do this with a command line like:
+
+```fish
+gh repo list birc-gsa | while read repo _ ; gh repo clone $repo $repo; end
+```
+
+for `fish` or 
+
+```bash
+gh repo list birc-gsa | while read -r repo _ ; do gh repo clone $repo $repo; done
+```
+
+for `bash`.
+
+
+
 ## Structure of GSA repos
 
 Since we allow students to choose different languages for the projects, and because they still have to do the same exercises and projects, the structure of these repositories is a little messy. We use some repositories for generic stuff, like exercise and project descriptions, and others for setting up the build environment for each of these. (Trying to have the students set up stuff that will work with testing workflows is doomed to failure, so we need to do this before they get the assignments). We then have concrete exercises and projects that mix a problem description with a build environment, that can pull the generic stuff from remote repos, and these we can use in GitHub Classroom for assignments.
@@ -116,16 +132,20 @@ Run it as
 > mix-project.sh project-name build-mixin
 ```
 
-where `build-mixin` doesn't contain the `build-` and `-mixin` part. A run as above is a dry-run that shows the commands that it will execute. Check that they are okay, and then run it as
-
-```sh
-> mix-project.sh -r project-name build-mixin
-```
-
-to run it for real.
+where `build-mixin` doesn't contain the `build-` and `-mixin` part.
 
 Run it from outside an existing repo clone because it will create a new dir and a repository in it. You will have to make it a template yourself, because I don't know how to do that on the command-line.
 
 From this project repo you can fetch new project data from `proj/main` and new build data from `build/main`.
 
 If you need to update a mixed project, you can use the `merge-mixed.sh` script to automatically fetch and merge from the build mixin and the generic project.
+
+
+
+## Setting up a new class
+
+When you are about to run a new class, create a new organisation for it (that way you can handle repos and administration access separately year for year). For year 20xx, create birc-gsa-20xx, for example.
+
+In that repo, go to Settings > Member privilages and change Base permissions to Read. Otherwise, the students cannot invite each other to review (and it is nice to get them to do that).
+
+Then, setup a GitHub Classroom and all the exercises--I don't think you can automate this, unfortunately.
