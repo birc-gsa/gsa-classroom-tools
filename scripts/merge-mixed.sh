@@ -1,11 +1,5 @@
 #!/bin/bash
 
-if ! git config remote.base.url > /dev/null; then
-    git remote add base https://github.com/birc-gsa/gsa-project-base
-fi
-git fetch base
-git merge base/main
-
 [ ! -f .gsa/project-base ] && echo ".gsa/project-base does not exist" && exit 1
 [ ! -f .gsa/build-base ] && echo ".gsa/build-base does not exist" && exit 1
 
