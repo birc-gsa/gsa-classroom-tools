@@ -5,13 +5,13 @@ Tools for working with GSA projects with GitHub Classroom.
 You might want to check out all the repos in this organisation, since you will be working with almost all of them. You can do this with a command line like:
 
 ```fish
-gh repo list birc-gsa | while read repo _ ; gh repo clone $repo $repo; end
+gh repo list -L500 birc-gsa | while read repo _ ; gh repo clone $repo $repo; end
 ```
 
 for `fish` or 
 
 ```bash
-gh repo list birc-gsa | while read -r repo _ ; do gh repo clone $repo $repo; done
+gh repo list -L500 birc-gsa | while read -r repo _ ; do gh repo clone $repo $repo; done
 ```
 
 for `bash`.
@@ -22,17 +22,35 @@ for `bash`.
 
 Since we allow students to choose different languages for the projects, and because they still have to do the same exercises and projects, the structure of these repositories is a little messy. We use some repositories for generic stuff, like exercise and project descriptions, and others for setting up the build environment for each of these. (Trying to have the students set up stuff that will work with testing workflows is doomed to failure, so we need to do this before they get the assignments). We then have concrete exercises and projects that mix a problem description with a build environment, that can pull the generic stuff from remote repos, and these we can use in GitHub Classroom for assignments.
 
-For the mandatory projects, we also use the same testing framework, the `gsa` script, so these projects share some files, that they get from another remote. For the exercises, we don't share anything, so they are independent repos.
+There is a base project repository containing a few template workflow files:
 
-The structure for projects looks like this, where the dashed lines refer to remote repos where we can pull updated files from.
+```
+.github/workflow/classroom.yml
+```
+
+that runs the testing framework when repos are pushed to GitHub. This will run language-specific actions
+
+```
+.github/actions/build
+.github/actions/unit-test
+```
+
+ that are not part of the base repo but part of the language mixins.
+
+ It will also optionally run
+
+ ```
+ .gihtub/actions/project-test (testing project specific stuff)
+ .github/actions/gsa-test (run the gsa tool for comparing searches)
+ ```
+
+ but only if the corresponding `actions.yml` files are found. The base repository contain (disabled) templates for these. They should be edited to make concrete projects, that can then be merged with the language mixins.
 
 ![Structure of project/exercises repos.](img/gsa-classroom.png)
 
 
 
 ## Setting up projects
-
-A "project" is basically the same as an "exercise", except that we pull in some additional testing framework for the structure the main projects have, and we do that from a base project repo remote.
 
 To set up a new project, use the `new-project.sh` script. It will automatically do the steps described below. However, if you want to do them manually, you can just follow the instructions.
 
@@ -53,9 +71,7 @@ Now you have a connection to the base-repo so you can fetch and merge updates in
 > git merge base/main
 ```
 
-The `merge-base-project.sh` script will do this for you, if you want it automated.
-
-In the new project, you can describe the specific project; use README.md for that, and you can configure the testing setup specific to the project. As a minimum, you need to add `.gsa/test-test.yml`. It is currently empty, but it must be populated for the testing workflow to function. An example could be this:
+In the new project, you can describe the specific project; use README.md for that, and you can configure the testing setup specific to the project. This can involve editing the `.github/actions/project-test` framework of the `.github/actions/gsa-test` framework. For the latter, you also want to add a `.gsa/test-test.yml` file to specify how `gsa` should run its tests. An example file could look like this:
 
 ```yaml
 tools:
@@ -95,26 +111,17 @@ runs:
       shell: bash
 ```
 
-and a testing workflow in `.github/workflows/build-ci.yml`, e.g.
+plus a unit test action, for example something like
 
 ```yaml
-name: Makefile CI
-
-on: [push]
-
-jobs:
-  make-testing:
-    name: Consistency testing from make file
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checking out repository
-        uses: actions/checkout@v2
-
-      - name: Building project
-        uses: ./.github/actions/build
-
-      - name: Checking
-        run:  make test
+name: Language specific unit tests
+description: Run C/CMake unit tests
+runs:
+  using: composite
+  steps:
+    - name: Checking
+      run:  make test
+      shell: bash
 ```
 
 In addition to this, it could contain some minimal setup for building for this environment. This isn't strictly necessary, since we likely will have to adapt it for each project anyway. But still...

@@ -44,29 +44,20 @@ runs:
       run:   make
       shell: bash
 EOT
-git add .github/actions/build/action.yml
 
-mkdir -p .github/workflows
-cat <<EOT > .github/workflows/build-ci.yml
-name: Build CI
-
-on: [push]
-
-jobs:
-  make-testing:
-    name: Consistency testing from make file
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checking out repository
-        uses: actions/checkout@v2
-
-      - name: Building project
-        uses: ./.github/actions/build
-
-      - name: Checking
-        run:  make test
+mkdir -p .github/actions/unit-testing
+cat <<EOT > .github/actions/unit-testing/action.yml
+name: Language specific unit tests
+description: Run C/CMake unit tests
+runs:
+  using: composite
+  steps:
+    - name: Checking
+      run:  make test
+      shell: bash
 EOT
-git add .github/workflows/build-ci.yml
+
+git add .github/actions
 
 git commit -m "first commit"
 git branch -M main
@@ -75,5 +66,5 @@ git push -u origin main
 git commit -am "done setting up mixin"
 git push
 
-echo "Now update .github/actions/build/action.yml and .github/workflows/build-ci.yml"
+echo "Now update .github/actions/{build,unit-testing}/action.yml"
 echo "to adjust the workflows to the new build system."
