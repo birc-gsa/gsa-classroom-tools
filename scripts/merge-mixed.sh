@@ -55,7 +55,6 @@ check_file .github/actions/project-test/action.yml   warn
 check_file .github/actions/gsa-test/action.yml       warn
 check_file .gsa/gsa-test.yaml                        warn
 
-echo
 echo -e "${BLUE}Pulling updates from mixin...${RESET}"
 git fetch build       > /dev/null
 git merge build/main  > /dev/null
